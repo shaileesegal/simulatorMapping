@@ -96,7 +96,7 @@ std::vector<std::pair<long unsigned int, cv::KeyPoint>> readKeyPoints(std::strin
     // Return the vector containing the keypoint-frameID pairs
     return keyPoints;
 }
-}
+
 
 //Function to create simulator settings from a JSON file
 void Simulator::createSimulatorSettings() {
@@ -120,9 +120,8 @@ void Simulator::createSimulatorSettings() {
 void Simulator::initPoints() {
     // Open the point data file and related descriptor and keypoints files
     std::ifstream pointData;
-    std::ifstream descData;
     std::vector<std::string> row;
-    std::string line, word, temp;
+    std::string line, word;
     int pointIndex;
     std::vector<std::pair<long unsigned int, cv::KeyPoint>> currKeyPoints;
     std::string currKeyPointsFilename;

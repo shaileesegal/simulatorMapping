@@ -18,57 +18,11 @@ std::unique_ptr<ORB_SLAM2::System> SLAM;
 std::string simulatorOutputDir;
 
 
-// Save a frame's data and image 
-void saveFrame(cv::Mat &img, cv::Mat pose, int currentFrameId, int number_of_points) {
-    // Check if the image is empty
-    if (img.empty()) {
-        std::cout << "Image is empty!!!" << std::endl;
-        return;
-    }
-
-    // Open a file to save frame data
-    std::ofstream frameData;
-    frameData.open(simulatorOutputDir + "frameData" + std::to_string(currentFrameId) + ".csv");
-
-    // Open a file to save the number of points in the frame
-    std::ofstream framePointsCount;
-    framePointsCount.open(simulatorOutputDir + "framePointsCount" + std::to_string(currentFrameId) + ".txt");
-    framePointsCount << number_of_points;
-    framePointsCount.close();
-
-    // Extract position from pose matrix
-    double x = pose.at<float>(0, 3);
-    double y = pose.at<float>(1, 3);
-    double z = pose.at<float>(2, 3);
-
-    // Create a 3D point to represent the camera position
-    cv::Point3d camera_position(x, y, z);
-
-    // Extract orientation from pose matrix
-    double yaw, pitch, roll;
-    yaw = atan2(pose.at<float>(1, 0), pose.at<float>(0, 0));
-    pitch = atan2(-pose.at<float>(2, 0), sqrt(pose.at<float>(2, 1) * pose.at<float>(2, 1) + pose.at<float>(2, 2) * pose.at<float>(2, 2)));
-    roll = atan2(pose.at<float>(2, 1), pose.at<float>(2, 2));
-
-    // Write frame data to the file
-    frameData << currentFrameId << ',' << camera_position.x << ',' << camera_position.y << ',' << camera_position.z << ','
-              << yaw << ',' << pitch << ',' << roll << std::endl;
-
-    // Save the image frame as a PNG file in the output directory
-    cv::imwrite(simulatorOutputDir + "frame_" + std::to_string(currentFrameId) + ".png", img);
-
-    // Close the frame data file
-    frameData.close();
-}
-
-
 // Save the SLAM map 
 void saveMap(int mapNumber) {
     // Open a file to save the map data
     std::ofstream pointData;
 
-    // Create an unordered set to keep track of frames
-    std::unordered_set<int> seen_frames;
     int i = 0;
 
     // Open the file to save the map data
@@ -180,10 +134,6 @@ int main() {
     programData >> data;
     programData.close();
 
-    // Get the current working directory and current time (for saving the SLAM results)
-    char currentDirPath[256];
-    getcwd(currentDirPath, 256);
-    
     char time_buf[21];
     time_t now;
     std::time(&now);
@@ -205,7 +155,7 @@ int main() {
     SLAM = std::make_unique<ORB_SLAM2::System>(vocPath, droneYamlPathSlam, ORB_SLAM2::System::MONOCULAR, true, true, loadMap,
                                                loadMapPath, true);
 
-    int amountOfAttempts = 0;
+    int amountOfAttempts = 0; //Possible to delete, may destroy in the future
     //video processing loop (processes the video frames from 'videoPath')
     while (amountOfAttempts++ < 1) {
         // Open the video file for processing
