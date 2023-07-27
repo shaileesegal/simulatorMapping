@@ -41,6 +41,7 @@
   "frameNumber": 99,
   "useLabICP": true,
   "trackImagesClass": false,
+  "trackImages": false,
   "simulatorPointsPath": "/home/shailee/Downloads/all-data/slamMaps/example_mapping_desc0/",
   "targetPointX": -0.340879,
   "targetPointY": -0.155054,

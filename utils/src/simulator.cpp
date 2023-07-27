@@ -96,7 +96,7 @@ std::vector<std::pair<long unsigned int, cv::KeyPoint>> readKeyPoints(std::strin
     // Return the vector containing the keypoint-frameID pairs
     return keyPoints;
 }
-}
+
 
 //Function to create simulator settings from a JSON file
 void Simulator::createSimulatorSettings() {

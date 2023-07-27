@@ -1,4 +1,4 @@
-##ifndef OFFLINE_MAP_POINT_H
+#ifndef OFFLINE_MAP_POINT_H
 #define OFFLINE_MAP_POINT_H
 
 #include <string>
